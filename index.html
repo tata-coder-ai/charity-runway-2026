@@ -557,30 +557,29 @@ document.documentElement.classList.add("js");
   var REPO="tata-coder-ai/charity-runway-2026",BRANCH="main",INITIAL=8;
   var grid=document.getElementById("gallery-grid"),moreBtn=document.getElementById("gallery-more");
   if(!grid)return;
-  function getList(path){
-    return fetch("https://api.github.com/repos/"+REPO+"/contents/"+path+"?ref="+BRANCH)
-      .then(function(r){return r.ok?r.json():[]})
-      .catch(function(){return[]});
-  }
   var cached=null;
   try{
-    var c=JSON.parse(localStorage.getItem("gal")||"null");
-    if(c&&Date.now()-c.t<3600000)cached=c.list;
+    var c=JSON.parse(localStorage.getItem("gal2")||"null");
+    if(c&&Date.now()-c.t<600000&&c.list&&c.list.length)cached=c.list;
   }catch(e){}
-  (cached?Promise.resolve(cached):Promise.all([getList(""),getList("images")]).then(function(res){
-    var list=[].concat(res[0]||[],res[1]||[])
-      .filter(function(f){return f.type==="file"&&/\.(jpe?g|png|webp)$/i.test(f.name)})
-      .map(function(f){return f.path});
-    try{localStorage.setItem("gal",JSON.stringify({t:Date.now(),list:list}))}catch(e){}
-    return list;
-  })).then(function(list){
+  (cached?Promise.resolve(cached):fetch("https://api.github.com/repos/"+REPO+"/git/trees/"+BRANCH+"?recursive=1")
+    .then(function(r){return r.ok?r.json():{}})
+    .then(function(d){
+      var list=(d.tree||[])
+        .filter(function(f){return f.type==="blob"&&/\.(jpe?g|png|webp)$/i.test(f.path)})
+        .map(function(f){return f.path});
+      if(list.length){try{localStorage.setItem("gal2",JSON.stringify({t:Date.now(),list:list}))}catch(e){}}
+      return list;
+    })
+    .catch(function(){return[]})
+  ).then(function(list){
     if(!list.length){document.getElementById("gallery").style.display="none";return}
     list.sort();
     function render(n){
       grid.innerHTML="";
       list.slice(0,n).forEach(function(p){
         var d=document.createElement("div");d.className="ph on";
-        var a=document.createElement("a");a.href="https://raw.githubusercontent.com/"+REPO+"/"+BRANCH+"/"+p;a.target="_blank";a.rel="noopener";a.style.cssText="display:block;width:100%;height:100%";
+        var a=document.createElement("a");a.href=encodeURI("https://raw.githubusercontent.com/"+REPO+"/"+BRANCH+"/"+p);a.target="_blank";a.rel="noopener";a.style.cssText="display:block;width:100%;height:100%";
         var img=document.createElement("img");img.src=a.href;img.alt="昨年のランウェイの様子";img.loading="lazy";
         a.appendChild(img);d.appendChild(a);grid.appendChild(d);
       });
