@@ -322,9 +322,9 @@ html.js .reveal.on{opacity:1;transform:none}
     </div>
     <div class="video-wrap reveal">
       <div class="video-frame">
-        <iframe src="https://drive.google.com/file/d/1saVUYrYmgQyaQJdTNwh8hmkKWiEZQzZM/preview" title="昨年のランウェイ ダイジェスト" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        <iframe src="https://www.youtube.com/embed/NtaF0ddMAJE?start=9810" title="昨年のランウェイ" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
-      <p class="caption">▶ 昨年（2025年）のダイジェスト動画。今年は普段着ステージも新登場！</p>
+      <p class="caption">▶ 昨年（2025年）のステージ映像。今年は普段着ステージも新登場！<br><a href="https://drive.google.com/file/d/1saVUYrYmgQyaQJdTNwh8hmkKWiEZQzZM/view" target="_blank" rel="noopener" style="color:#7a1f4d;font-weight:700">🎬 3分でわかるダイジェスト動画はこちら</a></p>
     </div>
   </div>
 </section>
@@ -552,44 +552,35 @@ document.documentElement.classList.add("js");
   }catch(err){}
   setTimeout(function(){document.querySelectorAll(".reveal").forEach(function(el){el.classList.add("on")})},2500);
 })();
-// gallery: GitHubリポジトリ内の画像を自動表示
+// gallery: 写真ファイル名を直接指定（写真を追加したら、この一覧にファイル名を追記してください）
 (function(){
-  var REPO="tata-coder-ai/charity-runway-2026",BRANCH="main",INITIAL=8;
+  var INITIAL=8;
   var grid=document.getElementById("gallery-grid"),moreBtn=document.getElementById("gallery-more");
   if(!grid)return;
-  var cached=null;
-  try{
-    var c=JSON.parse(localStorage.getItem("gal2")||"null");
-    if(c&&Date.now()-c.t<600000&&c.list&&c.list.length)cached=c.list;
-  }catch(e){}
-  (cached?Promise.resolve(cached):fetch("https://api.github.com/repos/"+REPO+"/git/trees/"+BRANCH+"?recursive=1")
-    .then(function(r){return r.ok?r.json():{}})
-    .then(function(d){
-      var list=(d.tree||[])
-        .filter(function(f){return f.type==="blob"&&/\.(jpe?g|png|webp)$/i.test(f.path)})
-        .map(function(f){return f.path});
-      if(list.length){try{localStorage.setItem("gal2",JSON.stringify({t:Date.now(),list:list}))}catch(e){}}
-      return list;
-    })
-    .catch(function(){return[]})
-  ).then(function(list){
-    if(!list.length){document.getElementById("gallery").style.display="none";return}
-    list.sort();
-    function render(n){
-      grid.innerHTML="";
-      list.slice(0,n).forEach(function(p){
-        var d=document.createElement("div");d.className="ph on";
-        var a=document.createElement("a");a.href=encodeURI("https://raw.githubusercontent.com/"+REPO+"/"+BRANCH+"/"+p);a.target="_blank";a.rel="noopener";a.style.cssText="display:block;width:100%;height:100%";
-        var img=document.createElement("img");img.src=a.href;img.alt="昨年のランウェイの様子";img.loading="lazy";
-        a.appendChild(img);d.appendChild(a);grid.appendChild(d);
-      });
-    }
-    render(INITIAL);
-    if(list.length>INITIAL){
-      moreBtn.style.display="block";
-      moreBtn.onclick=function(){render(list.length);moreBtn.style.display="none"};
-    }
-  });
+  var list=[
+    "img_1310.jpg","img_9707.jpg","img_1072.jpg","img_1188.jpg",
+    "img_0944.jpg","img_1469.jpg","img_9870.jpg","img_1152.jpg",
+    "211916_0.jpg","img_0702.jpg","img_0826.jpg","img_1018.jpg",
+    "img_1111.jpg","img_1178.jpg","img_1184.jpg","img_1431.jpg",
+    "img_1472.jpg","img_1488.jpg","img_9423.jpg","img_9463.jpg",
+    "img_9494.jpg","img_9653.jpg","img_9809.jpg","img_9958.jpg",
+    "line_album_20250817_250818_2.jpg"
+  ];
+  function render(n){
+    grid.innerHTML="";
+    list.slice(0,n).forEach(function(p){
+      var d=document.createElement("div");d.className="ph on";
+      var a=document.createElement("a");a.href=encodeURI(p);a.target="_blank";a.rel="noopener";a.style.cssText="display:block;width:100%;height:100%";
+      var img=document.createElement("img");img.src=encodeURI(p);img.alt="昨年のランウェイの様子";img.loading="lazy";
+      img.onerror=function(){d.remove()};
+      a.appendChild(img);d.appendChild(a);grid.appendChild(d);
+    });
+  }
+  render(INITIAL);
+  if(list.length>INITIAL){
+    moreBtn.style.display="block";
+    moreBtn.onclick=function(){render(list.length);moreBtn.style.display="none"};
+  }
 })();
 </script>
 </body>
