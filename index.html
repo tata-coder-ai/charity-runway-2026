@@ -96,10 +96,12 @@ h2.sec-title{font-family:'Shippori Mincho',serif;font-size:clamp(26px,4.5vw,40px
 /* ===== stages ===== */
 .stages{background:linear-gradient(180deg,#f3ecf9,#faf6ef)}
 .stage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;margin-bottom:56px}
-.stage{border-radius:18px;overflow:hidden;color:#fff;position:relative;min-height:320px;display:flex;flex-direction:column;justify-content:flex-end;padding:36px 30px}
+.stage{border-radius:18px;overflow:hidden;color:#fff;position:relative;display:flex;flex-direction:column}
 .stage.casual{background:radial-gradient(ellipse at 20% 15%,rgba(255,255,255,.18),transparent 50%),linear-gradient(160deg,#6b4fa0,#4b2e70)}
 .stage.party{background:radial-gradient(ellipse at 80% 10%,rgba(227,200,106,.35),transparent 55%),linear-gradient(160deg,#3a2260,#231238)}
-.stage .tag{position:absolute;top:22px;left:24px;border:1px solid rgba(255,255,255,.6);font-size:11.5px;letter-spacing:.2em;padding:5px 14px;border-radius:40px}
+.stage .stage-photo{width:100%;height:300px;object-fit:cover;object-position:center 20%;display:block}
+.stage .stage-body{padding:26px 30px 34px;flex:1}
+.stage .tag{position:absolute;top:18px;left:20px;border:1px solid rgba(255,255,255,.75);font-size:11.5px;letter-spacing:.2em;padding:5px 14px;border-radius:40px;background:rgba(35,18,56,.55);backdrop-filter:blur(4px)}
 .stage h3{font-family:'Cormorant Garamond',serif;font-size:27px;letter-spacing:.06em;margin-bottom:6px;color:var(--gold-light)}
 .stage h4{font-family:'Shippori Mincho',serif;font-size:18px;margin-bottom:12px;letter-spacing:.08em}
 .stage p{font-size:14px;color:#e8dff5}
@@ -309,15 +311,21 @@ html.js .reveal.on{opacity:1;transform:none}
     <div class="stage-grid">
       <div class="stage casual reveal">
         <span class="tag">CASUAL</span>
-        <h3>Everyday Fashion</h3>
-        <h4>日常着 × アップサイクル</h4>
-        <p>日常着をクリエイティブにリメイク。身近なサステナブルを表現するカジュアルステージ。今年からの新ステージです。</p>
+        <img class="stage-photo" src="casual_stage.jpg" alt="日常着アップサイクルのステージ" loading="lazy" onerror="this.style.display='none'">
+        <div class="stage-body">
+          <h3>Everyday Fashion</h3>
+          <h4>日常着 × アップサイクル</h4>
+          <p>日常着をクリエイティブにリメイク。身近なサステナブルを表現するカジュアルステージ。今年からの新ステージです。</p>
+        </div>
       </div>
       <div class="stage party reveal">
         <span class="tag">ELEGANT</span>
-        <h3>Party Wear</h3>
-        <h4>Luxury ＆ Tradition</h4>
-        <p>タンスに眠る着物、一度しか着ていないドレス。特別な日の衣装を再び輝かせる華やかなステージ。</p>
+        <img class="stage-photo" src="img_0944.jpg" alt="ドレスで歩くエレガントステージ" loading="lazy" onerror="this.style.display='none'">
+        <div class="stage-body">
+          <h3>Party Wear</h3>
+          <h4>Luxury ＆ Tradition</h4>
+          <p>タンスに眠る着物、一度しか着ていないドレス。特別な日の衣装を再び輝かせる華やかなステージ。</p>
+        </div>
       </div>
     </div>
     <div class="video-wrap reveal">
